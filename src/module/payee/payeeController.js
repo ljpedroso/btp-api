@@ -4,7 +4,7 @@ const CategoryModel = require('@app/module/category/category')
 
 const payeeController = {
   getAll: async (req, res) => {
-    const payees = await PayeeModel.find({})
+    const payees = await PayeeModel.find({ user: req.context.user })
       .sort([['name', 1]])
       .exec()
 
@@ -28,7 +28,8 @@ const payeeController = {
       name: req.body.name,
       url: req.body.url,
       frequency: req.body.frequency,
-      category: category
+      category: category,
+      user: req.body.user
     })
     try {
       await PayeeModel.create(newPayee)
@@ -49,6 +50,7 @@ const payeeController = {
         payee.url = req.body.url
         payee.frequency = req.body.frequency
         payee.category = category
+        payee.user = req.body.user
         await payee.save()
       }
     } catch (error) {

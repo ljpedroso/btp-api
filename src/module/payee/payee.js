@@ -12,7 +12,8 @@ const payeeSchema = new Schema({
   category: {
     type: categorySchema,
     default: {}
-  }
+  },
+  user: { type: Schema.ObjectId, ref: 'User' }
 })
 
 module.exports = mongoose.model('Payee', payeeSchema)

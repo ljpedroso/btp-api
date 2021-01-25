@@ -75,7 +75,6 @@ const authController = {
       return Promise.reject(error)
     }
   },
-  
 
   verifyRequest: async (req, res) => {
     try {

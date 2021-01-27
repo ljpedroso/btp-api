@@ -4,7 +4,7 @@ const HttpStatus = require('http-status-codes')
 const billValidator = {
   addBill: async (req, res, next) => {
     let {
-      body: { amountDue, balanceAmount, dueDate, payee }
+      body: { amountDue, balanceAmount, dueDate, payee, filename, imageUrl }
     } = req
 
     if (!amountDue) {
@@ -27,7 +27,7 @@ const billValidator = {
       return res.status(HttpStatus.BAD_REQUEST).json({ error: 'Error: Payee Required' })
     }
 
-    Object.assign(req.body, { amountDue, balanceAmount, dueDate, payee })
+    Object.assign(req.body, { amountDue, balanceAmount, dueDate, payee, filename, imageUrl })
 
     return next()
   },

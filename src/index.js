@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const HttpStatus = require('http-status-codes')
+const fileUpload = require('express-fileupload')
 
 require('module-alias').addAlias('@app', `${__dirname}/`)
 require('dotenv').config()
@@ -20,6 +21,8 @@ app.use(
   }),
   authentication
 )
+
+app.use(fileUpload())
 
 app.use(routes)
 

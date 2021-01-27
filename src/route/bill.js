@@ -10,4 +10,5 @@ module.exports = function (router) {
   router.patch('/bill/:id', middleware.isAuth, bill.updateBill)
   router.delete('/bill/:id', middleware.isAuth, bill.deleteBill)
   router.post('/bill/:id/pay', middleware.isAuth, validator.payBill, bill.payBill)
+  router.post('/bill/upload', middleware.isAuth, bill.uploadBillImage)
 }

@@ -1,6 +1,14 @@
 const HttpStatus = require('http-status-codes')
 const BillModel = require('@app/module/bill/bill')
 const isEmpty = require('lodash/isEmpty')
+const AWS = require('aws-sdk')
+
+const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com')
+const s3 = new AWS.S3({
+  endpoint: spacesEndpoint,
+  accessKeyId: process.env.SPACES_KEY,
+  secretAccessKey: process.env.SPACES_SECRET
+})
 
 const billController = {
   getAll: async (req, res) => {
@@ -34,7 +42,9 @@ const billController = {
       amountDue: req.body.amountDue,
       balanceAmount: req.body.balanceAmount,
       dueDate: req.body.dueDate,
-      payee: req.body.payee
+      payee: req.body.payee,
+      filename: req.body.filename,
+      imageUrl: req.body.imageUrl
     })
     try {
       await BillModel.create(newBill)
@@ -55,6 +65,8 @@ const billController = {
         bill.balanceAmount = req.body.balanceAmount
         bill.dueDate = req.body.dueDate
         bill.payee = req.body.payee
+        bill.filename = req.body.filename
+        bill.imageUrl = req.body.imageUrl
         await bill.save()
         billWithPayee = await BillModel.findById(bill._id).populate('payee')
       }
@@ -96,6 +108,23 @@ const billController = {
       res.status(HttpStatus.BAD_REQUEST).json(error)
     }
     return res.status(HttpStatus.OK).json({ success: true, data: bill })
+  },
+  uploadBillImage: async (req, res) => {
+    const baseUrl = 'https://btp-storage.nyc3.digitaloceanspaces.com/'
+    const file = req.files.file
+    var params = {
+      Bucket: 'btp-storage',
+      Key: file.name,
+      Body: file.data,
+      ACL: 'public-read'
+    }
+
+    s3.putObject(params, (err, data) => {
+      if (err) res.status(HttpStatus.BAD_REQUEST).json(err)
+      return res
+        .status(HttpStatus.OK)
+        .json({ filename: file.name, url: baseUrl + file.name, etag: data.ETag })
+    })
   }
 }
 

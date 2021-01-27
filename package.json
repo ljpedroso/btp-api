@@ -37,7 +37,7 @@
     "crypto-random-string": "^3.3.0",
     "ejs": "^3.1.5",
     "email-templates": "^8.0.2",
-    "express": "^5.0.0-alpha.8",
+    "express": "^4.17.1",
     "express-fileupload": "^1.2.1",
     "http-status-codes": "^2.1.4",
     "jsonwebtoken": "^8.5.1",

@@ -24,7 +24,7 @@ const authController = {
         body: { email, password }
       } = req
 
-      const user = await UserModel.emailExist(email)
+      const user = await UserModel.findOne({ email })
       if (!user) {
         return res.status(HttpStatus.BAD_REQUEST).json({ error: 'User not found.' })
       }

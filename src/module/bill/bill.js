@@ -11,8 +11,7 @@ const billSchema = new Schema({
   paid: { type: Boolean, required: true, default: false },
   paymentMethod: { type: String, required: false, default: '' },
   payee: { type: Schema.ObjectId, ref: 'Payee' },
-  filename: { type: String, required: false, default: '' },
-  imageUrl: { type: String, required: false, default: '' }
+  file: { type: Schema.ObjectId, ref: 'File' }
 })
 
 module.exports = mongoose.model('Bill', billSchema)

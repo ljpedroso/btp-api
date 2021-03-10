@@ -46,7 +46,6 @@ const billController = {
       payee: req.body.payee,
       file: req.body.file
     })
-    console.log('new bill', newBill)
     try {
       await BillModel.create(newBill)
       billWithPayee = await BillModel.findById(newBill._id).populate(['payee', 'file'])
